@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useCalibrationStore } from '@/store/calibrationStore';
 import { calculateCalibration } from '@/engine/regression';
-import { Target, Copy, Check, AlertTriangle, HelpCircle } from 'lucide-react';
+import { Target, Copy, Check, AlertTriangle } from 'lucide-react';
+import InfoTooltip from '@/components/InfoTooltip';
 
 export default function ResultsPanel() {
   const { measurements, currentScale, currentOffset } = useCalibrationStore();
@@ -178,13 +179,14 @@ export default function ResultsPanel() {
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${getRSquaredDot(result.rSquared)}`} />
             <span className="text-xs text-text-muted">Fit Quality (R²)</span>
-            <div className="relative group">
-              <HelpCircle className="w-3 h-3 text-text-muted cursor-help" />
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-bg-primary border border-border text-xs text-text-secondary w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 shadow-lg">
-                R² (coefficient of determination) measures how well the regression line fits your data. 1.0 = perfect fit.
-                Values ≥ 0.99 are excellent, ≥ 0.95 are good, below 0.95 suggests measurement errors.
-              </div>
-            </div>
+            <InfoTooltip
+              label="Show fit quality help"
+              iconClassName="w-3 h-3"
+              tooltipClassName="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-bg-primary border border-border text-xs text-text-secondary w-56"
+            >
+              R² (coefficient of determination) measures how well the regression line fits your data. 1.0 = perfect fit.
+              Values ≥ 0.99 are excellent, ≥ 0.95 are good, below 0.95 suggests measurement errors.
+            </InfoTooltip>
           </div>
           <div className="flex items-center gap-2">
             <span className={`text-sm font-mono font-semibold ${getRSquaredColor(result.rSquared)}`}>

@@ -1,6 +1,7 @@
 import { useCalibrationStore } from '@/store/calibrationStore';
-import { Settings, RotateCcw, HelpCircle } from 'lucide-react';
+import { Settings, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
+import InfoTooltip from '@/components/InfoTooltip';
 
 export default function SettingsPanel() {
   const { currentScale, currentOffset, setCurrentScale, setCurrentOffset, resetAll } =
@@ -79,19 +80,14 @@ export default function SettingsPanel() {
             >
               Current Meter Scale
             </label>
-            <div className="group relative">
-              <HelpCircle className="w-3.5 h-3.5 text-text-muted cursor-help" />
-              <div
-                className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-lg 
-                            bg-bg-secondary border border-border text-xs text-text-secondary w-52
-                            opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10
-                            shadow-lg"
-              >
-                The multiplier for the raw ADC reading. Default is <strong className="text-text-primary">400</strong> in Betaflight.
-                In the CLI:{' '}
-                <code className="font-mono text-accent-cyan">current_meter_scale</code>
-              </div>
-            </div>
+            <InfoTooltip
+              label="Show scale help"
+              tooltipClassName="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-lg bg-bg-secondary border border-border text-xs text-text-secondary w-52"
+            >
+              The multiplier for the raw ADC reading. Default is <strong className="text-text-primary">400</strong> in Betaflight.
+              In the CLI:{' '}
+              <code className="font-mono text-accent-cyan">current_meter_scale</code>
+            </InfoTooltip>
           </div>
           <input
             id="current-scale-input"
@@ -115,19 +111,14 @@ export default function SettingsPanel() {
             >
               Offset (mV steps)
             </label>
-            <div className="group relative">
-              <HelpCircle className="w-3.5 h-3.5 text-text-muted cursor-help" />
-              <div
-                className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-lg 
-                            bg-bg-secondary border border-border text-xs text-text-secondary w-52
-                            opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10
-                            shadow-lg"
-              >
-                The offset added to the scaled reading. Default is <strong className="text-text-primary">0</strong>.
-                In the CLI:{' '}
-                <code className="font-mono text-accent-cyan">current_meter_offset</code>
-              </div>
-            </div>
+            <InfoTooltip
+              label="Show offset help"
+              tooltipClassName="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-lg bg-bg-secondary border border-border text-xs text-text-secondary w-52"
+            >
+              The offset added to the scaled reading. Default is <strong className="text-text-primary">0</strong>.
+              In the CLI:{' '}
+              <code className="font-mono text-accent-cyan">current_meter_offset</code>
+            </InfoTooltip>
           </div>
           <input
             id="current-offset-input"
