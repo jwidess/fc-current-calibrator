@@ -126,16 +126,16 @@ function SortableMeasurementRow({
       </td>
 
       {/* Delete */}
-      <td className="py-2 px-3 text-right">
+      <td className="py-2 pl-1 pr-3 text-right w-12">
         <button
           id={`delete-measurement-${index}`}
           tabIndex={-1}
           onClick={() => removeMeasurement(id)}
           disabled={!canDelete}
-          className={`p-1.5 rounded-md transition-all cursor-pointer
+          className={`p-1 rounded-md transition-all cursor-pointer
             ${
               canDelete
-                ? 'text-text-muted hover:text-accent-red hover:bg-accent-red/10 opacity-0 group-hover:opacity-100'
+                ? 'text-text-muted hover:text-accent-red hover:bg-accent-red/10'
                 : 'text-border cursor-not-allowed opacity-30'
             }`}
           title={canDelete ? 'Remove measurement' : 'Minimum 2 measurements required'}
@@ -208,7 +208,7 @@ export default function MeasurementTable() {
                 <th className="text-left py-2 px-3 w-20">#</th>
                 <th className="text-left py-2 px-3">True Current (A)</th>
                 <th className="text-left py-2 px-3">FC Reported (A)</th>
-                <th className="text-right py-2 px-3 w-14"></th>
+                <th className="text-right py-2 pl-1 pr-3 w-12"></th>
               </tr>
             </thead>
             <SortableContext
