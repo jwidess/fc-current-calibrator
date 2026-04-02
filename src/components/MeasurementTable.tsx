@@ -86,9 +86,9 @@ export default function MeasurementTable() {
                       onChange={(e) =>
                         updateMeasurement(m.id, { trueCurrent: e.target.value })
                       }
-                      className="w-full px-3 py-1.5 rounded-md bg-bg-input border border-border text-text-primary 
+                      className="w-full px-3 py-1.5 rounded-md bg-accent-green/5 border border-border text-accent-green
                                  font-mono text-sm placeholder-text-muted
-                                 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue/30
+                                 focus:border-accent-green focus:outline-none focus:ring-1 focus:ring-accent-green/30
                                  transition-all"
                       placeholder="0.00"
                     />
@@ -104,9 +104,9 @@ export default function MeasurementTable() {
                       onChange={(e) =>
                         updateMeasurement(m.id, { fcCurrent: e.target.value })
                       }
-                      className="w-full px-3 py-1.5 rounded-md bg-bg-input border border-border text-text-primary 
+                      className="w-full px-3 py-1.5 rounded-md bg-accent-red/5 border border-border text-accent-red 
                                  font-mono text-sm placeholder-text-muted
-                                 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue/30
+                                 focus:border-accent-red focus:outline-none focus:ring-1 focus:ring-accent-red/30
                                  transition-all"
                       placeholder="0.00"
                     />
