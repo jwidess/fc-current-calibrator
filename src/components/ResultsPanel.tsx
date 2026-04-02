@@ -211,13 +211,13 @@ save`}
           <button
             id="copy-cli-btn"
             onClick={() => handleCopy(cliCommands, 'cli')}
-            className="absolute top-2 right-2 p-1.5 rounded-md bg-bg-card/80 hover:bg-bg-card border border-border/50 transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+            className="absolute top-2 right-2 p-2 rounded-md hover:bg-bg-card transition-colors cursor-pointer"
             title="Copy CLI commands"
           >
             {copiedField === 'cli' ? (
-              <Check className="w-3.5 h-3.5 text-accent-green" />
+              <Check className="w-4 h-4 text-accent-green" />
             ) : (
-              <Copy className="w-3.5 h-3.5 text-text-muted" />
+              <Copy className="w-4 h-4 text-text-muted" />
             )}
           </button>
         </div>
