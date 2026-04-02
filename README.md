@@ -66,6 +66,13 @@ This tool helps you find the correct **Scale** and **Offset** values by comparin
 - **Recharts 3** - Charting library for scatter plot + regression line
 - **Lucide React** - Icon set
 
+## Credits: 
+The following information was incredibly useful for developing this tool, Mr. D RC developed the original version of this tool, but I wanted to create something a bit more feature rich.
+- mrd-rc.com: 
+  - https://www.mrd-rc.com/tutorials-tools-and-testing/flight-controller-therapy/setting-the-current-sensor-in-inav/
+  - https://www.mrd-rc.com/tutorials-tools-and-testing/inav-flight/current-sensor-scale-and-offset-calculation-how-it-works/
+- oscarliang.com: https://oscarliang.com/current-sensor-calibration/
+
 ## AI Disclaimer: 
 This project was developed with significant work from AI code generation tools, as I am still new to web development. However, I have tested this across 2x flight controllers thus far and it has worked perfectly for both. Please make sure to validate the generated results before trusting your current readings.
 
