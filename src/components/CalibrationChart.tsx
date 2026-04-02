@@ -6,21 +6,64 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
   Line,
   ComposedChart,
+  Tooltip as RechartsTooltip,
 } from 'recharts';
 import { LineChart as LineChartIcon } from 'lucide-react';
+
+interface ChartDataPoint {
+  x: number;
+  trueCurrent: number | null;  // null for line-only extension points
+  newCal: number;
+  oldCal: number;
+}
+
+// Custom tooltip, only shows when hovering near an actual measurement dot
+function CustomTooltip({ active, payload }: {
+  active?: boolean;
+  payload?: Array<{ name: string; value: number | null; payload: ChartDataPoint }>;
+}) {
+  if (!active || !payload || payload.length === 0) return null;
+
+  const point = payload[0]?.payload;
+  if (!point || point.trueCurrent === null) return null; // Don't show line only points
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#1a2236',
+        border: '1px solid #3a4f7a',
+        borderRadius: '8px',
+        padding: '8px 12px',
+        fontSize: '12px',
+        fontFamily: "'JetBrains Mono', monospace",
+        pointerEvents: 'none',
+      }}
+    >
+      <div style={{ color: '#94a3b8', marginBottom: '4px', fontSize: '11px' }}>Measurement</div>
+      <div style={{ color: '#22c55e', marginBottom: '2px' }}>
+        True Current: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.trueCurrent.toFixed(3)} A</span>
+      </div>
+      <div style={{ color: '#f87171' }}>
+        Old Cal Current: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.oldCal.toFixed(3)} A</span>
+      </div>
+      <div style={{ color: '#60a5fa', marginBottom: '2px' }}>
+        ADC Voltage: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.x.toFixed(2)} mV</span>
+      </div>
+    </div>
+  );
+}
 
 export default function CalibrationChart() {
   const { measurements, currentScale, currentOffset } = useCalibrationStore();
 
-  const { result, scatterData, newLineData, oldLineData } = useMemo(() => {
+  const { hasResult, chartData } = useMemo(() => {
     const scale = parseFloat(currentScale);
     const offset = parseFloat(currentOffset);
     if (isNaN(scale) || scale === 0 || isNaN(offset)) {
-      return { result: null, scatterData: [], newLineData: [], oldLineData: [] };
+      return { hasResult: false, chartData: [] as ChartDataPoint[] };
     }
 
     const validMeasurements = measurements
@@ -32,45 +75,58 @@ export default function CalibrationChart() {
       .filter((m) => !isNaN(m.trueCurrent) && !isNaN(m.fcCurrent));
 
     if (validMeasurements.length < 2) {
-      return { result: null, scatterData: [], newLineData: [], oldLineData: [] };
+      return { hasResult: false, chartData: [] as ChartDataPoint[] };
     }
 
     const calcResult = calculateCalibration(validMeasurements, scale, offset);
     if (!calcResult) {
-      return { result: null, scatterData: [], newLineData: [], oldLineData: [] };
+      return { hasResult: false, chartData: [] as ChartDataPoint[] };
     }
 
-    const scatter = calcResult.dataPoints.map((p) => ({
-      x: parseFloat(p.x.toFixed(4)),
-      y: parseFloat(p.y.toFixed(4)),
-    }));
+    // Old calibration line coefficients
+    const oldSlope = 10 / scale;
+    const oldIntercept = -offset * 10 / scale;
 
-    const newLine = [
-      {
-        x: parseFloat(calcResult.regressionLine.x1.toFixed(4)),
-        y: parseFloat(calcResult.regressionLine.y1.toFixed(4)),
-      },
-      {
-        x: parseFloat(calcResult.regressionLine.x2.toFixed(4)),
-        y: parseFloat(calcResult.regressionLine.y2.toFixed(4)),
-      },
-    ];
+    // Build a unified dataset: each measurement point + extension endpoints for lines
+    const data: ChartDataPoint[] = [];
 
-    const oldLine = [
-      {
-        x: parseFloat(calcResult.oldCalibrationLine.x1.toFixed(4)),
-        y: parseFloat(calcResult.oldCalibrationLine.y1.toFixed(4)),
-      },
-      {
-        x: parseFloat(calcResult.oldCalibrationLine.x2.toFixed(4)),
-        y: parseFloat(calcResult.oldCalibrationLine.y2.toFixed(4)),
-      },
-    ];
+    // Add actual measurement data points
+    for (const dp of calcResult.dataPoints) {
+      data.push({
+        x: parseFloat(dp.x.toFixed(4)),
+        trueCurrent: parseFloat(dp.y.toFixed(4)),
+        newCal: parseFloat((calcResult.slope * dp.x + calcResult.intercept).toFixed(4)),
+        oldCal: parseFloat((oldSlope * dp.x + oldIntercept).toFixed(4)),
+      });
+    }
 
-    return { result: calcResult, scatterData: scatter, newLineData: newLine, oldLineData: oldLine };
+    // Add extension points so lines reach from x=0 to beyond the data
+    const xMax = Math.max(...calcResult.dataPoints.map((p) => p.x));
+    const xExtend = xMax * 1.1;
+
+    // x=0 endpoint
+    data.push({
+      x: 0,
+      trueCurrent: null,
+      newCal: parseFloat(calcResult.intercept.toFixed(4)),
+      oldCal: parseFloat(oldIntercept.toFixed(4)),
+    });
+
+    // x=max+10% endpoint
+    data.push({
+      x: parseFloat(xExtend.toFixed(4)),
+      trueCurrent: null,
+      newCal: parseFloat((calcResult.slope * xExtend + calcResult.intercept).toFixed(4)),
+      oldCal: parseFloat((oldSlope * xExtend + oldIntercept).toFixed(4)),
+    });
+
+    // Sort by x so lines render correctly
+    data.sort((a, b) => a.x - b.x);
+
+    return { hasResult: true, chartData: data };
   }, [measurements, currentScale, currentOffset]);
 
-  if (!result) {
+  if (!hasResult) {
     return (
       <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
         <div className="flex items-center gap-2.5 mb-4">
@@ -102,16 +158,17 @@ export default function CalibrationChart() {
       </div>
 
       {/* Chart */}
-      <div className="h-64 w-full">
+      <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
+            data={chartData}
             margin={{ top: 10, right: 20, bottom: 20, left: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#2a3654" strokeOpacity={0.5} />
             <XAxis
               dataKey="x"
               type="number"
-              domain={['auto', 'auto']}
+              domain={[0, 'auto']}
               tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
               label={{
                 value: 'ADC Voltage (mV)',
@@ -120,10 +177,10 @@ export default function CalibrationChart() {
                 fill: '#64748b',
                 fontSize: 11,
               }}
-              stroke="#2a3654"
+              stroke="#475569"
+              tickLine={{ stroke: '#475569' }}
             />
             <YAxis
-              dataKey="y"
               type="number"
               domain={['auto', 'auto']}
               tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
@@ -135,56 +192,52 @@ export default function CalibrationChart() {
                 fill: '#64748b',
                 fontSize: 11,
               }}
-              stroke="#2a3654"
+              stroke="#475569"
+              tickLine={{ stroke: '#475569' }}
             />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: '#1a2236',
-                border: '1px solid #2a3654',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontFamily: "'JetBrains Mono', monospace",
-                color: '#f1f5f9',
-              }}
-              formatter={(value, name) => {
-                if (name === 'y') return [`${value} A`, 'True Current'];
-                return [value, 'V (mV)'];
-              }}
-              labelFormatter={(label) => `V: ${label} mV`}
+            <RechartsTooltip
+              content={<CustomTooltip />}
+              cursor={{ stroke: '#475569', strokeDasharray: '3 3' }}
+              allowEscapeViewBox={{ x: true, y: true }}
+              wrapperStyle={{ zIndex: 10 }}
             />
-            {/* Old calibration line (what FC was computing) */}
+            {/* Old calibration line (what the FC was computing) */}
             <Line
-              data={oldLineData}
-              dataKey="y"
+              dataKey="oldCal"
               type="linear"
               stroke="#ef4444"
               strokeWidth={1.5}
               strokeDasharray="4 4"
-              strokeOpacity={0.6}
+              strokeOpacity={0.5}
               dot={false}
+              activeDot={false}
               name="Old Cal"
               legendType="none"
+              isAnimationActive={false}
+              connectNulls
             />
             {/* New calibration / regression line */}
             <Line
-              data={newLineData}
-              dataKey="y"
+              dataKey="newCal"
               type="linear"
               stroke="#22c55e"
               strokeWidth={2}
               strokeDasharray="6 3"
               dot={false}
+              activeDot={false}
               name="New Cal"
               legendType="none"
+              isAnimationActive={false}
+              connectNulls
             />
-            {/* Data points */}
+            {/* Data points (trueCurrent is null for extension points, so no dot renders) */}
             <Scatter
-              data={scatterData}
+              dataKey="trueCurrent"
               fill="#3b82f6"
               stroke="#60a5fa"
               strokeWidth={1}
-              r={5}
               name="Measurements"
+              isAnimationActive={false}
             />
           </ComposedChart>
         </ResponsiveContainer>
