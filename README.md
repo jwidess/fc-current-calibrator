@@ -8,6 +8,8 @@ This is a simple web tool to calibrate your flight controller's current sensor f
 
 ![React](https://img.shields.io/badge/React-19-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![Recharts](https://img.shields.io/badge/Recharts-3-red) ![Zustand](https://img.shields.io/badge/Zustand-5-yellow)
 
+![Example Image](example.png)
+
 ## What It Does
 
 Most flight controllers use a linear formula to convert the current sensor's ADC voltage reading into amps:
@@ -46,7 +48,7 @@ This tool helps you find the correct **Scale** and **Offset** values by comparin
 
 - A **benchtop power supply** with current readout, or an **inline current meter / clamp meter**
 - An **adjustable or programmable load**, or just test a motor and ESC at different throttle levels
-- Your FC's **current calibration values** from your configurator
+- Your FC's **present calibration values** from your configurator
 
 ## Features
 
