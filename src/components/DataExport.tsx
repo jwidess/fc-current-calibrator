@@ -215,7 +215,7 @@ export default function DataExport() {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".csv,.txt"
+        accept=".csv,text/csv,text/plain,application/csv,.txt"
         onChange={handleImport}
         className="hidden"
       />
