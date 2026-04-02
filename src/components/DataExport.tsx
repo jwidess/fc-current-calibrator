@@ -105,10 +105,10 @@ export default function DataExport() {
 
           // Parse comment lines for settings
           if (trimmed.startsWith('#')) {
-            const scaleMatch = trimmed.match(/Current Meter Scale:\s*([\d.]+)/);
+            const scaleMatch = trimmed.match(/^#\s*Current Meter Scale:\s*([\d.]+)/);
             if (scaleMatch?.[1]) parsedScale = scaleMatch[1];
 
-            const offsetMatch = trimmed.match(/Offset \(mV steps\):\s*([\d.-]+)/);
+            const offsetMatch = trimmed.match(/^#\s*Offset \(mV steps\):\s*([\d.-]+)/);
             if (offsetMatch?.[1]) parsedOffset = offsetMatch[1];
             continue;
           }
