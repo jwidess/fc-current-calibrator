@@ -1,7 +1,8 @@
 import { useCalibrationStore } from '@/store/calibrationStore';
 import {
   DndContext,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   closestCenter,
   useSensor,
   useSensors,
@@ -71,6 +72,7 @@ function SortableMeasurementRow({
             {...attributes}
             {...listeners}
             className="p-1 rounded-md text-text-muted hover:text-text-primary hover:bg-bg-input cursor-grab active:cursor-grabbing"
+            style={{ touchAction: 'none' }}
             title="Drag to reorder"
             aria-label={`Drag row ${index + 1} to reorder`}
           >
@@ -157,9 +159,15 @@ export default function MeasurementTable() {
   } = useCalibrationStore();
 
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: {
-        distance: 6,
+        distance: 4,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 120,
+        tolerance: 8,
       },
     }),
   );
