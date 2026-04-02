@@ -10,6 +10,7 @@ export default function DataExport() {
     currentOffset,
     setCurrentScale,
     setCurrentOffset,
+    replaceMeasurements,
     resetAll,
   } = useCalibrationStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -147,32 +148,11 @@ export default function DataExport() {
         if (parsedScale) setCurrentScale(parsedScale);
         if (parsedOffset) setCurrentOffset(parsedOffset);
 
-        // We need to wait a tick for reset to apply, then set measurements
-        // Use the store's functions directly
-        setTimeout(() => {
-          const state = useCalibrationStore.getState();
+        // Replace imported rows in one store update to preserve CSV order.
+        replaceMeasurements(dataRows);
 
-          // Remove default rows first
-          for (const m of state.measurements) {
-            useCalibrationStore.getState().removeMeasurement(m.id);
-          }
-
-          // Add imported rows
-          for (const row of dataRows) {
-            useCalibrationStore.getState().addMeasurement();
-            const currentMeasurements = useCalibrationStore.getState().measurements;
-            const lastMeasurement = currentMeasurements[currentMeasurements.length - 1];
-            if (lastMeasurement) {
-              useCalibrationStore.getState().updateMeasurement(lastMeasurement.id, {
-                trueCurrent: row.trueCurrent,
-                fcCurrent: row.fcCurrent,
-              });
-            }
-          }
-
-          setImportStatus({ type: 'success', message: `Imported ${dataRows.length} measurements.` });
-          setTimeout(() => setImportStatus(null), 3000);
-        }, 50);
+        setImportStatus({ type: 'success', message: `Imported ${dataRows.length} measurements.` });
+        setTimeout(() => setImportStatus(null), 3000);
       } catch {
         setImportStatus({ type: 'error', message: 'Failed to parse the CSV file.' });
         setTimeout(() => setImportStatus(null), 4000);

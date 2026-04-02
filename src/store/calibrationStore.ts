@@ -27,6 +27,8 @@ interface CalibrationActions {
   addMeasurement: () => void;
   updateMeasurement: (id: string, data: Partial<Omit<Measurement, 'id'>>) => void;
   removeMeasurement: (id: string) => void;
+  reorderMeasurements: (activeId: string, overId: string) => void;
+  replaceMeasurements: (rows: Array<Omit<Measurement, 'id'>>) => void;
 
   resetAll: () => void;
 }
@@ -68,6 +70,40 @@ export const useCalibrationStore = create<CalibrationStore>()(
       removeMeasurement: (id) =>
         set((state) => ({
           measurements: state.measurements.filter((m) => m.id !== id),
+        })),
+
+      reorderMeasurements: (activeId, overId) =>
+        set((state) => {
+          const oldIndex = state.measurements.findIndex((m) => m.id === activeId);
+          const newIndex = state.measurements.findIndex((m) => m.id === overId);
+
+          if (oldIndex < 0 || newIndex < 0 || oldIndex === newIndex) {
+            return { measurements: state.measurements };
+          }
+
+          const reordered = [...state.measurements];
+          const [moved] = reordered.splice(oldIndex, 1);
+
+          if (!moved) {
+            return { measurements: state.measurements };
+          }
+
+          reordered.splice(newIndex, 0, moved);
+          return { measurements: reordered };
+        }),
+
+      replaceMeasurements: (rows) =>
+        set(() => ({
+          measurements: rows.length > 0
+            ? rows.map((row) => ({
+                id: generateId(),
+                trueCurrent: row.trueCurrent,
+                fcCurrent: row.fcCurrent,
+              }))
+            : [
+                { id: generateId(), trueCurrent: '', fcCurrent: '' },
+                { id: generateId(), trueCurrent: '', fcCurrent: '' },
+              ],
         })),
 
       resetAll: () => set({

@@ -65,6 +65,7 @@ This tool helps you find the correct **Scale** and **Offset** values by comparin
 - **Zustand 5** - Lightweight state management with localStorage persistence
 - **Recharts 3** - Charting library for scatter plot + regression line
 - **Lucide React** - Icon set
+- **dnd-kit** - Drag-and-drop toolkit for reordering measurements
 
 ## Credits: 
 The following information was incredibly useful for developing this tool, Mr. D RC developed the original version of this tool, but I wanted to create something a bit more feature rich.
