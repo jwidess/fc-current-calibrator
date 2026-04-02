@@ -165,7 +165,28 @@ export default function DataExport() {
   };
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div
+      className="flex items-center gap-3 flex-wrap animate-fade-in"
+      style={{ animationDelay: '120ms', animationFillMode: 'both' }}
+    >
+      {/* Status message */}
+      {importStatus && (
+        <div
+          className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md animate-fade-in ${
+            importStatus.type === 'success'
+              ? 'bg-accent-green/10 text-accent-green'
+              : 'bg-accent-red/10 text-accent-red'
+          }`}
+        >
+          {importStatus.type === 'success' ? (
+            <Check className="w-3.5 h-3.5" />
+          ) : (
+            <AlertCircle className="w-3.5 h-3.5" />
+          )}
+          {importStatus.message}
+        </div>
+      )}
+
       {/* Export */}
       <button
         id="export-csv-btn"
@@ -198,24 +219,6 @@ export default function DataExport() {
         onChange={handleImport}
         className="hidden"
       />
-
-      {/* Status message */}
-      {importStatus && (
-        <div
-          className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md animate-fade-in ${
-            importStatus.type === 'success'
-              ? 'bg-accent-green/10 text-accent-green'
-              : 'bg-accent-red/10 text-accent-red'
-          }`}
-        >
-          {importStatus.type === 'success' ? (
-            <Check className="w-3.5 h-3.5" />
-          ) : (
-            <AlertCircle className="w-3.5 h-3.5" />
-          )}
-          {importStatus.message}
-        </div>
-      )}
     </div>
   );
 }
