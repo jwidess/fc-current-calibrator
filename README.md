@@ -66,6 +66,8 @@ This tool helps you find the correct **Scale** and **Offset** values by comparin
 - **Recharts 3** - Charting library for scatter plot + regression line
 - **Lucide React** - Icon set
 
+## AI Disclaimer: 
+This project was developed with significant work from AI code generation tools, as I am still new to web development. However, I have tested this across 2x flight controllers thus far and it has worked perfectly for both. Please make sure to validate the generated results before trusting your current readings.
 
 ## License
 
