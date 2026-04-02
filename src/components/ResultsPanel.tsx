@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useCalibrationStore } from '@/store/calibrationStore';
 import { calculateCalibration } from '@/engine/regression';
-import { Target, Copy, Check, AlertTriangle } from 'lucide-react';
+import { Target, Copy, Check, AlertTriangle, HelpCircle } from 'lucide-react';
 
 export default function ResultsPanel() {
   const { measurements, currentScale, currentOffset } = useCalibrationStore();
@@ -97,6 +97,7 @@ export default function ResultsPanel() {
 
   const roundedScale = Math.round(result.newScale);
   const roundedOffset = Math.round(result.newOffset);
+  const cliCommands = `set current_meter_scale = ${roundedScale}\nset current_meter_offset = ${roundedOffset}\nsave`;
 
   return (
     <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
@@ -177,6 +178,13 @@ export default function ResultsPanel() {
           <div className="flex items-center gap-2">
             <div className={`w-2 h-2 rounded-full ${getRSquaredDot(result.rSquared)}`} />
             <span className="text-xs text-text-muted">Fit Quality (R²)</span>
+            <div className="relative group">
+              <HelpCircle className="w-3 h-3 text-text-muted cursor-help" />
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg bg-bg-primary border border-border text-xs text-text-secondary w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 shadow-lg">
+                R² (coefficient of determination) measures how well the regression line fits your data. 1.0 = perfect fit.
+                Values ≥ 0.99 are excellent, ≥ 0.95 are good, below 0.95 suggests measurement errors.
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <span className={`text-sm font-mono font-semibold ${getRSquaredColor(result.rSquared)}`}>
@@ -189,24 +197,30 @@ export default function ResultsPanel() {
         </div>
       </div>
 
-      {/* Instructions */}
-      <div className="mt-4 px-3 py-2.5 rounded-lg bg-accent-green/5 border border-accent-green/15">
-        <p className="text-xs text-text-secondary leading-relaxed">
-          Enter these values in your configurator:{' '}
-          <span className="font-mono text-accent-cyan text-[11px]">
-            Power & Battery → Current Meter
-          </span>
-          , or via CLI:{' '}
-          <code className="font-mono text-accent-cyan text-[11px]">
-            set current_meter_scale = {roundedScale}
-          </code>{' '}
-          and{' '}
-          <code className="font-mono text-accent-cyan text-[11px]">
-            set current_meter_offset = {roundedOffset}
-          </code>
-          . Don't forget to{' '}
-          <code className="font-mono text-accent-yellow text-[11px]">save</code>!
+      {/* CLI commands code block */}
+      <div className="mt-4 relative">
+        <p className="text-xs text-text-muted mb-2">
+          Paste into your FC's CLI:
         </p>
+        <div className="relative group">
+          <pre className="text-xs font-mono text-accent-cyan bg-bg-primary/80 border border-border rounded-lg px-3.5 py-2.5 leading-relaxed overflow-x-auto">
+{`set current_meter_scale = ${roundedScale}
+set current_meter_offset = ${roundedOffset}
+save`}
+          </pre>
+          <button
+            id="copy-cli-btn"
+            onClick={() => handleCopy(cliCommands, 'cli')}
+            className="absolute top-2 right-2 p-1.5 rounded-md bg-bg-card/80 hover:bg-bg-card border border-border/50 transition-colors cursor-pointer opacity-0 group-hover:opacity-100"
+            title="Copy CLI commands"
+          >
+            {copiedField === 'cli' ? (
+              <Check className="w-3.5 h-3.5 text-accent-green" />
+            ) : (
+              <Copy className="w-3.5 h-3.5 text-text-muted" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
