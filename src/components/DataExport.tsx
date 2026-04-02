@@ -51,7 +51,7 @@ export default function DataExport() {
       lines.push(`# New Current Meter Scale: ${Math.round(result.newScale)} (${result.newScale.toFixed(4)})`);
       lines.push(`# New Offset (mV steps): ${Math.round(result.newOffset)} (${result.newOffset.toFixed(4)})`);
       lines.push(`# R²: ${result.rSquared.toFixed(6)}`);
-      lines.push(`# Regression: true_current = ${result.slope.toFixed(6)} × V_mV + (${result.intercept.toFixed(6)})`);
+      lines.push(`# Regression: true_current = ${result.slope.toFixed(6)} * V_mV + (${result.intercept.toFixed(6)})`);
       lines.push('#');
     }
 

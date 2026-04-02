@@ -2,15 +2,15 @@
  * Linear regression engine for FC current sensor calibration.
  *
  * The FC current sensor firmware formula (Betaflight / iNav):
- *   displayed_amps = (V_mV − offset) × 10 / scale
+ *   displayed_amps = (V_mV − offset) * 10 / scale
  *
  * Rearranged to recover voltage from a displayed reading:
- *   V_mV = displayed_amps × scale / 10 + offset
+ *   V_mV = displayed_amps * scale / 10 + offset
  *
  * Given paired measurements of (true_current, fc_displayed_current)
  * and the FC's current scale/offset settings, we:
  *   1. Back-calculate the ADC voltage (mV) from what the FC displays
- *   2. Run least-squares linear regression: true_current = slope × V_mV + intercept
+ *   2. Run least-squares linear regression: true_current = slope * V_mV + intercept
  *   3. Derive new firmware params: new_scale = 10 / slope, new_offset = −intercept / slope
  */
 
@@ -40,8 +40,8 @@ export interface CalibrationResult {
  * Convert an FC-displayed current reading back to the ADC sensor voltage (mV)
  * using the FC's current calibration parameters.
  *
- * The firmware computes: displayed_amps = (V_mV − offset) × 10 / scale
- * Rearranging:           V_mV = displayed_amps × scale / 10 + offset
+ * The firmware computes: displayed_amps = (V_mV − offset) * 10 / scale
+ * Rearranging:           V_mV = displayed_amps * scale / 10 + offset
  */
 export function backCalculateVoltage(
   fcDisplayed: number,
@@ -114,17 +114,17 @@ export function calculateCalibration(
     y: m.trueCurrent,
   }));
 
-  // 2. Run linear regression: true_current = slope × V_mV + intercept
+  // 2. Run linear regression: true_current = slope * V_mV + intercept
   const regression = linearRegression(dataPoints);
   if (!regression) return null;
   if (Math.abs(regression.slope) < 1e-15) return null; // slope must be non-zero
 
   // 3. Derive new firmware parameters
-  // From: true_current = (V_mV − new_offset) × 10 / new_scale
-  //     = (10/new_scale) × V_mV − (10 × new_offset / new_scale)
-  // Matching to: true_current = slope × V_mV + intercept
+  // From: true_current = (V_mV − new_offset) * 10 / new_scale
+  //     = (10/new_scale) * V_mV − (10 * new_offset / new_scale)
+  // Matching to: true_current = slope * V_mV + intercept
   //   slope     = 10 / new_scale       → new_scale  = 10 / slope
-  //   intercept = −new_offset × slope  → new_offset = −intercept / slope
+  //   intercept = −new_offset * slope  → new_offset = −intercept / slope
   const newScale = 10 / regression.slope;
   const newOffset = -regression.intercept / regression.slope;
 
@@ -137,7 +137,7 @@ export function calculateCalibration(
   const lineX2 = xMax + xRange * 0.05;
 
   // 4. Compute the old calibration line (what the FC was computing with old params)
-  // Old formula: true_current_old = (V_mV − oldOffset) × 10 / oldScale
+  // Old formula: true_current_old = (V_mV − oldOffset) * 10 / oldScale
   const oldSlope = 10 / oldScale;
   const oldIntercept = -oldOffset * 10 / oldScale;
 

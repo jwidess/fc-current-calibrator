@@ -76,7 +76,7 @@ export default function CalculationSteps() {
                 The FC computes current as:
               </p>
               <code className="block text-xs font-mono text-accent-cyan bg-bg-primary/50 px-2.5 py-1.5 rounded">
-                displayed_A = (V_mV − offset) × 10 / scale
+                displayed_A = (V_mV - offset) * 10 / scale
               </code>
             </div>
 
@@ -87,7 +87,7 @@ export default function CalculationSteps() {
                 Using your present settings (scale={scale}, offset={offset}):
               </p>
               <code className="block text-xs font-mono text-accent-cyan bg-bg-primary/50 px-2.5 py-1.5 rounded mb-2">
-                V_mV = FC_reading × {scale}/10 + {offset}
+                V_mV = FC_reading * {scale}/10 + {offset}
               </code>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs font-mono">
@@ -120,7 +120,7 @@ export default function CalculationSteps() {
                 Least-squares fit of true_current vs V_mV:
               </p>
               <code className="block text-xs font-mono text-accent-cyan bg-bg-primary/50 px-2.5 py-1.5 rounded mb-2">
-                true_current = {result.slope.toFixed(6)} × V_mV + ({result.intercept.toFixed(6)})
+                true_current = {result.slope.toFixed(6)} * V_mV + ({result.intercept.toFixed(6)})
               </code>
               <p className="text-xs text-text-muted">
                 R² = {result.rSquared.toFixed(6)}
@@ -143,7 +143,7 @@ export default function CalculationSteps() {
                 <div className="flex items-center gap-2">
                   <code className="text-xs font-mono text-text-secondary">new_offset</code>
                   <span className="text-xs text-text-muted">=</span>
-                  <code className="text-xs font-mono text-text-secondary">−({result.intercept.toFixed(6)}) / {result.slope.toFixed(6)}</code>
+                  <code className="text-xs font-mono text-text-secondary">-({result.intercept.toFixed(6)}) / {result.slope.toFixed(6)}</code>
                   <span className="text-xs text-text-muted">=</span>
                   <code className="text-xs font-mono text-accent-green font-semibold">{result.newOffset.toFixed(4)}</code>
                   <span className="text-xs text-text-muted">≈</span>

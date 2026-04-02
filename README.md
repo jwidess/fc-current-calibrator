@@ -13,7 +13,7 @@ This is a simple web tool to calibrate your flight controller's current sensor f
 Most flight controllers use a linear formula to convert the current sensor's ADC voltage reading into amps:
 
 ```
-displayed_amps = (V_mV − offset) × 10 / scale
+displayed_amps = (V_mV − offset) * 10 / scale
 ```
 
 Where:
@@ -27,14 +27,14 @@ This tool helps you find the correct **Scale** and **Offset** values by comparin
 
 1. Enter your FC's **present** Scale and Offset values. These are used to back-calculate the ADC voltage:
    ```
-   V_mV = FC_reading × scale / 10 + offset
+   V_mV = FC_reading * scale / 10 + offset
    ```
 2. Record paired measurements at different current levels:
    - **True Current**: what your accurate meter reads
    - **FC Reported**: what your flight controller reports
 3. The tool runs a **least-squares linear regression** on the back-calculated ADC voltages vs. true current:
    ```
-   true_current = slope × V_mV + intercept
+   true_current = slope * V_mV + intercept
    ```
 4. The new config parameters are derived from the regression coefficients:
    ```
