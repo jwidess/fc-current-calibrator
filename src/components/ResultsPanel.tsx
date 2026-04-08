@@ -77,7 +77,7 @@ export default function ResultsPanel() {
       <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
         <div className="flex items-center gap-2.5 mb-4">
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-cyan/10">
-            <Target className="w-4 h-4 text-accent-cyan" />
+            <Target className="w-4 h-4 text-accent-blue" />
           </div>
           <h2 className="text-base font-semibold text-text-primary">Results</h2>
         </div>
@@ -104,8 +104,8 @@ export default function ResultsPanel() {
     <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-5">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 animate-pulse-glow">
-          <Target className="w-4 h-4 text-accent-cyan" />
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue/20 to-accent-yellow/20 animate-pulse-glow">
+          <Target className="w-4 h-4 text-accent-blue" />
         </div>
         <h2 className="text-base font-semibold text-text-primary">Results</h2>
       </div>
@@ -147,10 +147,7 @@ export default function ResultsPanel() {
           <div>
             <p className="text-xs text-text-muted mb-0.5">New Offset (mV steps)</p>
             <div className="flex items-baseline gap-2">
-              <span
-                id="result-offset"
-                className="text-2xl font-bold font-mono bg-gradient-to-r from-accent-purple to-accent-blue bg-clip-text text-transparent"
-              >
+              <span id="result-offset" className="text-2xl font-bold font-mono text-accent-yellow">
                 {roundedOffset}
               </span>
               <span className="text-xs text-text-muted font-mono">

@@ -12,17 +12,18 @@ export default function App() {
     <div className="min-h-screen bg-bg-primary">
       {/* Background gradient effect */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-accent-blue/[0.04] to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[860px] h-[420px] bg-gradient-to-b from-accent-blue/[0.06] to-transparent rounded-full blur-3xl" />
+        <div className="absolute -top-10 right-[8%] w-[420px] h-[260px] bg-gradient-to-b from-accent-yellow/[0.07] to-transparent rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 py-8">
         {/* ── Header ── */}
         <header className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-blue/20 to-accent-purple/20 border border-accent-blue/20 mb-4">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-blue/20 to-accent-yellow/20 border border-accent-blue/25 mb-4">
             <Zap className="w-7 h-7 text-accent-blue" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
-            <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-accent-blue to-accent-yellow bg-clip-text text-transparent">
               FC Current Sensor
             </span>{' '}
             Calibrator
@@ -30,8 +31,8 @@ export default function App() {
           <p className="text-sm text-text-secondary max-w-lg mx-auto leading-relaxed">
             Calibrate your flight controller's current sensor by comparing real measurements
             with your FC readings. Works with{' '}
-            <span className="text-text-primary font-medium">Betaflight</span>,{' '}
-            <span className="text-text-primary font-medium">iNav</span>, and other firmware
+            <span className="text-accent-yellow font-semibold">Betaflight</span>,{' '}
+            <span className="text-accent-blue font-semibold">iNav</span>, and other firmware
             using scale/offset calibration.
           </p>
         </header>

@@ -205,8 +205,8 @@ export default function DataExport() {
         id="import-csv-btn"
         onClick={() => fileInputRef.current?.click()}
         className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg
-                   bg-accent-purple/10 text-accent-purple border border-accent-purple/20
-                   hover:bg-accent-purple/20 hover:border-accent-purple/30
+                   bg-accent-yellow/10 text-accent-yellow border border-accent-yellow/20
+                   hover:bg-accent-yellow/20 hover:border-accent-yellow/30
                    transition-all cursor-pointer"
       >
         <Upload className="w-3.5 h-3.5" />

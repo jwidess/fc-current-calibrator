@@ -33,8 +33,8 @@ function CustomTooltip({ active, payload }: {
   return (
     <div
       style={{
-        backgroundColor: '#1a2236',
-        border: '1px solid #3a4f7a',
+        backgroundColor: 'var(--color-bg-card)',
+        border: '1px solid var(--color-border)',
         borderRadius: '8px',
         padding: '8px 12px',
         fontSize: '12px',
@@ -42,15 +42,15 @@ function CustomTooltip({ active, payload }: {
         pointerEvents: 'none',
       }}
     >
-      <div style={{ color: '#94a3b8', marginBottom: '4px', fontSize: '11px' }}>Measurement</div>
-      <div style={{ color: '#22c55e', marginBottom: '2px' }}>
-        True Current: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.trueCurrent.toFixed(3)} A</span>
+      <div style={{ color: 'var(--color-text-secondary)', marginBottom: '4px', fontSize: '11px' }}>Measurement</div>
+      <div style={{ color: 'var(--color-accent-green)', marginBottom: '2px' }}>
+        True Current: <span style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>{point.trueCurrent.toFixed(3)} A</span>
       </div>
-      <div style={{ color: '#f87171' }}>
-        Old Cal Current: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.oldCal.toFixed(3)} A</span>
+      <div style={{ color: 'var(--color-accent-red)' }}>
+        Old Cal Current: <span style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>{point.oldCal.toFixed(3)} A</span>
       </div>
-      <div style={{ color: '#60a5fa', marginBottom: '2px' }}>
-        ADC Voltage: <span style={{ color: '#f1f5f9', fontWeight: 600 }}>{point.x.toFixed(2)} mV</span>
+      <div style={{ color: 'var(--color-accent-blue)', marginBottom: '2px' }}>
+        ADC Voltage: <span style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>{point.x.toFixed(2)} mV</span>
       </div>
     </div>
   );
@@ -130,8 +130,8 @@ export default function CalibrationChart() {
     return (
       <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-green/10">
-            <LineChartIcon className="w-4 h-4 text-accent-green" />
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-blue/10">
+            <LineChartIcon className="w-4 h-4 text-accent-blue" />
           </div>
           <h2 className="text-base font-semibold text-text-primary">Fit Visualization</h2>
         </div>
@@ -146,8 +146,8 @@ export default function CalibrationChart() {
     <div className="rounded-xl border border-border bg-bg-card p-5 animate-fade-in">
       {/* Header */}
       <div className="flex items-center gap-2.5 mb-4">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-green/10">
-          <LineChartIcon className="w-4 h-4 text-accent-green" />
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-blue/10">
+          <LineChartIcon className="w-4 h-4 text-accent-blue" />
         </div>
         <div>
           <h2 className="text-base font-semibold text-text-primary">Fit Visualization</h2>
@@ -164,40 +164,40 @@ export default function CalibrationChart() {
             data={chartData}
             margin={{ top: 10, right: 20, bottom: 20, left: 10 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#2a3654" strokeOpacity={0.5} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" strokeOpacity={0.5} />
             <XAxis
               dataKey="x"
               type="number"
               domain={[0, 'auto']}
-              tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
+              tick={{ fill: 'var(--color-text-secondary)', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
               label={{
                 value: 'ADC Voltage (mV)',
                 position: 'insideBottom',
                 offset: -10,
-                fill: '#64748b',
+                fill: 'var(--color-text-muted)',
                 fontSize: 11,
               }}
-              stroke="#475569"
-              tickLine={{ stroke: '#475569' }}
+              stroke="var(--color-accent-gray)"
+              tickLine={{ stroke: 'var(--color-accent-gray)' }}
             />
             <YAxis
               type="number"
               domain={['auto', 'auto']}
-              tick={{ fill: '#94a3b8', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
+              tick={{ fill: 'var(--color-text-secondary)', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" }}
               label={{
                 value: 'Current (A)',
                 angle: -90,
                 position: 'insideLeft',
                 offset: 5,
-                fill: '#64748b',
+                fill: 'var(--color-text-muted)',
                 fontSize: 11,
               }}
-              stroke="#475569"
-              tickLine={{ stroke: '#475569' }}
+              stroke="var(--color-accent-gray)"
+              tickLine={{ stroke: 'var(--color-accent-gray)' }}
             />
             <RechartsTooltip
               content={<CustomTooltip />}
-              cursor={{ stroke: '#475569', strokeDasharray: '3 3' }}
+              cursor={{ stroke: 'var(--color-accent-gray)', strokeDasharray: '3 3' }}
               allowEscapeViewBox={{ x: true, y: true }}
               wrapperStyle={{ zIndex: 10 }}
             />
@@ -205,7 +205,7 @@ export default function CalibrationChart() {
             <Line
               dataKey="oldCal"
               type="linear"
-              stroke="#ef4444"
+              stroke="var(--color-accent-red)"
               strokeWidth={1.5}
               strokeDasharray="4 4"
               strokeOpacity={0.5}
@@ -220,7 +220,7 @@ export default function CalibrationChart() {
             <Line
               dataKey="newCal"
               type="linear"
-              stroke="#22c55e"
+              stroke="var(--color-accent-green)"
               strokeWidth={2}
               strokeDasharray="6 3"
               dot={false}
@@ -233,8 +233,8 @@ export default function CalibrationChart() {
             {/* Data points (trueCurrent is null for extension points, so no dot renders) */}
             <Scatter
               dataKey="trueCurrent"
-              fill="#3b82f6"
-              stroke="#60a5fa"
+              fill="var(--color-accent-yellow)"
+              stroke="#ffd566"
               strokeWidth={1}
               name="Measurements"
               isAnimationActive={false}
@@ -246,7 +246,7 @@ export default function CalibrationChart() {
       {/* Legend */}
       <div className="flex items-center justify-center gap-5 mt-2 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-accent-blue" />
+          <div className="w-3 h-3 rounded-full bg-accent-yellow" />
           <span className="text-xs text-text-muted">Measured</span>
         </div>
         <div className="flex items-center gap-2">

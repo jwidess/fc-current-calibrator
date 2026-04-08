@@ -184,8 +184,8 @@ export default function MeasurementTable() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-purple/10">
-            <FlaskConical className="w-4 h-4 text-accent-purple" />
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent-yellow/10">
+            <FlaskConical className="w-4 h-4 text-accent-yellow" />
           </div>
           <div>
             <h2 className="text-base font-semibold text-text-primary">Measurements</h2>
