@@ -42,8 +42,8 @@ export default function HelpSection() {
                   or an <strong className="text-text-primary">inline current meter / clamp meter</strong>
                 </li>
                 <li>
-                  An <strong className="text-text-primary">adjustable or programmable load</strong>,
-                  or just test a motor and ESC at different throttle levels
+                  An <strong className="text-text-primary">adjustable / programmable load</strong>,
+                  or just use a motor and ESC at different throttle levels
                 </li>
                 <li>
                   Your FC's <strong className="text-text-primary">present calibration values</strong> (Scale & Offset)
@@ -63,7 +63,7 @@ export default function HelpSection() {
                   and note your present{' '}
                   <code className="font-mono text-accent-cyan">Current Meter Scale</code> and{' '}
                   <code className="font-mono text-accent-cyan">Offset</code> values.
-                  Enter them in the "Current FC Settings" section above.
+                  Enter them in the "Present FC Settings" section above.
                 </li>
                 <li>
                   <strong className="text-text-primary">Set a known current draw</strong> — Use your adjustable load (or set a throttle level)

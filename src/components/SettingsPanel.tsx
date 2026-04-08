@@ -17,7 +17,7 @@ export default function SettingsPanel() {
             <Settings className="w-4 h-4 text-accent-blue" />
           </div>
           <h2 className="text-base font-semibold text-text-primary">
-            Current FC Settings
+            Present FC Settings
           </h2>
         </div>
         <div className="relative">
@@ -63,9 +63,9 @@ export default function SettingsPanel() {
       {/* Info Banner */}
       <div className="mb-4 px-3 py-2.5 rounded-lg bg-accent-blue/5 border border-accent-blue/15">
         <p className="text-xs text-text-secondary leading-relaxed">
-          Enter the <strong className="text-text-primary">current</strong> calibration values from your flight controller.
+          Enter the <strong className="text-text-primary">present</strong> calibration values from your flight controller.
           These are needed to back-calculate the raw sensor readings from the FC's displayed current.
-          Refer to your specific FC documentation for the location of these values.
+          Refer to your specific FC configurator documentation for the location of these values. Or use the CLI commands <code className="font-mono text-accent-cyan">current_meter_scale</code> and <code className="font-mono text-accent-cyan">current_meter_offset</code> to get them.
         </p>
       </div>
 
@@ -84,7 +84,7 @@ export default function SettingsPanel() {
               label="Show scale help"
               tooltipClassName="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 rounded-lg bg-bg-secondary border border-border text-xs text-text-secondary w-52"
             >
-              The multiplier for the raw ADC reading. Default is <strong className="text-text-primary">400</strong> in Betaflight.
+              The multiplier for the raw ADC reading. Default will vary by FC but is often around <strong className="text-text-primary">150-400</strong>.
               In the CLI:{' '}
               <code className="font-mono text-accent-cyan">current_meter_scale</code>
             </InfoTooltip>

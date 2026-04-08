@@ -152,7 +152,7 @@ export default function CalibrationChart() {
         <div>
           <h2 className="text-base font-semibold text-text-primary">Fit Visualization</h2>
           <p className="text-xs text-text-muted mt-0.5">
-            ADC voltage (mV) → True current
+            ADC voltage (mV) → Current
           </p>
         </div>
       </div>
